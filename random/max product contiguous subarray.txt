@@ -1,0 +1,41 @@
+Find the contiguous subarray within an array (containing at least one number) which has the largest product.
+For example, given the array [2,3,-2,4],
+the contiguous subarray [2,3] has the largest product = 6.
+Understand the problem:
+The problem is very similar to the maximum subarray, which calculates the maximum addition of a subarray. Unlike the in the maximum subarray problem the local optimal can lead to the global optimal, the maximum product subarray cannot. e.g. -2 3 -4, where at -4 the local max is -4, however the global should be -2 * 3 * -4. 
+
+The solution is to maintain to dp arrays, one maintains the local min and the other maintain the local max. Therefore, we define the DP arrays as
+dpMin[i], the minimum subarray INCLUDING nums[i]
+dpMax[i], the maximum subarray INCLUDING nums[i]
+
+dpMin[i] = Min(dpMin[i - 1] * A[i], dpMax[i - 1] * A[i], A[i]);
+dpMax[i] = Max(dpMax[i - 1] * A[i], dp[Min[i - 1] * A[i], A[i]);
+
+The final state is to check max(result, dpMax[i]). 
+
+
+public class Solution {
+    public int maxProduct(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int len = nums.length;
+        int[] dpMin = new int[len];
+        int[] dpMax = new int[len];
+         
+        dpMin[0] = nums[0];
+        dpMax[0] = nums[0];
+         
+        for (int i = 1; i < len; i++) {
+            dpMin[i] = Math.min(Math.min(dpMin[i - 1] * nums[i], dpMax[i - 1] * nums[i]), nums[i]);
+            dpMax[i] = Math.max(Math.max(dpMax[i - 1] * nums[i], dpMin[i - 1] * nums[i]), nums[i]);
+        }
+         
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < len; i++) {
+            max = Math.max(max, dpMax[i]);
+        }
+         
+        return max;
+    }
+}

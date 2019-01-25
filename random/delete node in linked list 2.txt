@@ -1,0 +1,42 @@
+Remove all elements from a linked list of integers that have value val.
+Example
+Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+Return: 1 --> 2 --> 3 --> 4 --> 5
+Understand the problem:
+The solution should handle the under cases:
+1. If the val is the head, we need a dummy node.
+2. If the val to be removed has multiple in consecutive. e.g.
+dummy -> 1 -> 2 -> 1 -> 1 -> 1 -> 1 -> null, and val = 1
+So we need to iterate over all the elements to be removed until the next non-removed one.
+3. If the val to be removed is at the tail. 
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head a ListNode
+     * @param val an integer
+     * @return a ListNode
+     */
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        head = dummy;
+        
+        while (head.next != null) {
+            if (head.next.val == val) {
+                head.next = head.next.next;
+            } else {
+                head = head.next;
+            }
+        }
+        
+        return dummy.next;
+    }
+}

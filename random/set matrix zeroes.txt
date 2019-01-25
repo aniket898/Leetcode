@@ -1,0 +1,76 @@
+Given an m x n matrix of 0s and 1s, if an element is 0, set its entire row and column to 0.
+
+Do it in place.
+
+Example
+
+Given array A as
+
+1 0 1
+1 1 1 
+1 1 1
+On returning, the array A should be :
+
+0 0 0
+1 0 1
+1 0 1
+
+public class Solution {
+	public void setZeroes(ArrayList<ArrayList<Integer>> A) {
+	    Set<Integer> rows = new HashSet<Integer>();
+		Set<Integer> columns = new HashSet<Integer>();
+		int rowSize = A.size();
+		int columnSize = A.get(0).size();
+		
+		int[][] matrix = new int[rowSize][columnSize];
+		//System.out.println(A.size()+"  "+A.get(0).size());
+		int i=0;
+		int j=0;
+		for(ArrayList<Integer> temp:A){
+			j=0;
+			for(Integer integer:temp){
+				if(integer == 0){
+					rows.add(i);
+					columns.add(j);
+				}
+				matrix[i][j]=integer;
+				j++;
+			}
+			i++;
+		}
+		
+		for(int k=0;k<rowSize;k++){
+			if(rows.contains(k)){
+				for(int l=0;l<columnSize;l++){
+					matrix[k][l]=0;
+				}
+			}
+		}	
+		for(int l=0;l<columnSize;l++){
+			if(columns.contains(l)){
+				for(int k=0;k<rowSize;k++){
+					matrix[k][l]=0;
+				}
+			}
+		}
+		
+		
+			
+		//A.toArray()
+		/*for(i=0;i<A.size();i++){
+			
+			for(j=0;j<A.get(0).size();j++){
+				System.out.print(" "+matrix[i][j]);
+			}
+			System.out.println();
+		}*/
+		A.clear();
+		for(i=0;i<rowSize;i++){
+			ArrayList<Integer> temp2 = new ArrayList<Integer>();
+			for(j=0;j<columnSize;j++){
+				temp2.add(matrix[i][j]);
+			}
+			A.add(temp2);
+		}
+	}
+}

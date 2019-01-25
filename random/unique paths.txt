@@ -1,0 +1,73 @@
+Understand the problem:
+The problem asks for how many unique paths start from top-left of the matrix to the bottom-right. 
+
+Recursive Solution:
+The most straight-forward solution is to use recursion. For each node, note that we can only go down or go right.
+
+public class Solution {
+    public int uniquePaths(int m, int n) {
+        if (m == 0 || n == 0) {
+            return 0;
+        }
+         
+        return uniquePathsHelper(m, n);
+    }
+     
+    private int uniquePathsHelper(int m, int n) {
+        if (m == 1 || n == 1) {
+            return 1;
+        }
+         
+        return uniquePathsHelper(m - 1, n) + uniquePathsHelper(m, n - 1);
+    }
+}
+
+
+
+
+Discussion:
+We can draw an recursion tree to deeply understand the problem. Note that why m == 1 or n == 1, we return 1. That is because when we reach the bottom or right-most ends, there will be only one solution available. Note that we can only go down or right. For example, there is an 3 x 3 matrix, the recursion tree would look like:
+                                             (3, 3)
+                                        /                 \     
+                             (2, 3)                   (3, 2)
+                               /  \                       /   \ 
+                          (1,3)  (2,2)         (2, 2) (2, 1)
+                                      /\              /\
+                              (1,2) (2,1) (1,2) (2,1)
+
+So we can see that the total number of unique paths is 6. We can also clearly see that calculating (2, 2) is redundant. So it is naturally to think about a DP solution.  
+
+DP Solution:
+The crux of the Java solution is to define a transit equation. We define dp[i][j] means the total number of unique paths from dp[0][0] to dp[i][j]. So dp[i][j] = dp[i - 1][j] + dp[i][j - 1]. So we can only need to check about the last element, which is dp[m-1][n-1]. 
+
+
+
+
+public class Solution {
+    public int uniquePaths(int m, int n) {
+        if (m == 0 || n == 0) {
+            return 0;
+        }
+         
+        int[][] dp = new int[m][n];
+         
+        for (int i = 0; i < n; i++) {
+            dp[0][i] = 1;
+        }
+         
+        for (int i = 0; i < m; i++) {
+            dp[i][0] = 1;
+        }
+         
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+         
+        return dp[m - 1][n - 1];
+    }
+}
+
+Discussion:
+The time complexity is O(m * n), linear to the size of the matrix. The space complexity is O(m * n) since we allocate a dp matrix. 

@@ -1,0 +1,62 @@
+Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+For example,
+Given [3,2,1,5,6,4] and k = 2, return 5.
+Note: 
+You may assume k is always valid, 1 <= k <= array's length.
+Credits:
+Special thanks to @mithmatt for adding this problem and creating all test cases.
+A max-heap solution:
+First of all, put all elements into the heap. Then poll the top k elements from the max heap then we get the result. The time complexity for max heap is  O(n) + O(k * logn). The space complexity is O(n).
+
+
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+         
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(nums.length, Collections.reverseOrder());
+         
+        for (int num : nums) {
+            maxHeap.offer(num);
+        }
+         
+        int result = 0;
+        for (int i = 0; i < k; i++) {
+            result = maxHeap.poll();
+        }
+         
+        return result;
+    }
+}
+
+
+A min-heap solution:
+ -- Step 1: put the first k elements into the heap. Time complexity is O(k). 
+ -- Step 2: Start from elements k + 1 to n, compare each one with heap.peek(). If greater than the peek, replace with the element. The time complexity is O((n - k) logk).
+  -- Step 3: After we iterate the array, the heap stores the top k elements, and the kth largest element is the minimum element of the heap, which is peek.
+
+The space complexity is O(k). 
+
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+         
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(k);
+         
+        for (int num : nums) {
+            if (maxHeap.size() < k) {
+                maxHeap.offer(num);
+            } else {
+                if (num > maxHeap.peek()) {
+                    maxHeap.poll();
+                    maxHeap.offer(num);
+                }
+            }
+        }
+         
+        return maxHeap.peek();
+    }
+}

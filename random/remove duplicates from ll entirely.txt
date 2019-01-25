@@ -1,0 +1,58 @@
+Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
+For example,
+Given 1->2->3->3->4->4->5, return 1->2->5.
+Given 1->1->1->2->3, return 2->3.
+
+
+Understand the problem:
+The problem asks for removing duplicated numbers from a linked list. Note the the difference from the last post is all duplicated numbers are deleted.  For example,
+1  ->  1  -> 1  -> 2  , return 2
+
+For an empty linked list, return null
+For a linked list with only 1 element, return the original linked list. 
+
+Solution:
+We still use two pointers, p and q. q pointer is one step ahead of p at beginning. Move q pointer if q is duplicated. If q pointer moves more than one steps (has duplicates), move p.next = q.next. Else, move p and q one step ahead. The crux is to determine if q moves multiple steps. If yes, it means q pointer has duplicates, we should jump the q pointer. Else, q pointer should be saved. For example,
+0 -> 1  -> 2 ->3, where p and q points to 0 and 1, respectively. Since 1 has no duplicates afterwards, we move both p and q one step ahead.
+0  -> 1  -> 1 -> 2  -> 3, where again p and q points to 0 and 1, respectively. Since now i has duplicates afterwards, we should jump the 1s and points p to the value of 2.
+
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+         
+        ListNode helper = new ListNode(0);
+        helper.next = head;
+        head = helper;
+         
+        ListNode p = head;
+        ListNode q = head.next;
+         
+        while (q != null) {
+            while (q.next != null && q.val == q.next.val) {
+                q = q.next;
+            }
+            if (p.next != q) {
+                p.next = q.next;
+                if (q != null) q = q.next;
+            } else {
+                p = p.next;
+                q = q.next;
+            }
+        }
+        return head.next;
+    }
+}

@@ -1,0 +1,70 @@
+Design an algorithm to encode a list of strings to a string. The encoded string is then sent over the network and is decoded back to the original list of strings.
+Machine 1 (sender) has the function:
+string encode(vector<string> strs) {
+  // ... your code
+  return encoded_string;
+}
+Machine 2 (receiver) has the function:
+vector<string> decode(string s) {
+  //... your code
+  return strs;
+}
+So Machine 1 does:
+string encoded_string = encode(strs);
+and Machine 2 does:
+vector<string> strs2 = decode(encoded_string);
+strs2 in Machine 2 should be the same as strs in Machine 1.
+Implement the encode and decode methods.
+
+
+One way we can think of is to use the number at front. e.g. abcdef, we can store 6abcdef. 
+However, what if the string also starts from numbers, e.g. 123abc. In this case, what we stored is 6123abc, which is wrong. Therefore, we need to use another divider to divide the length of the string with the string itself. In this solution, we just use '#'. 
+
+public class Codec {
+ 
+    // Encodes a list of strings to a single string.
+    public String encode(List<String> strs) {
+        if (strs == null || strs.size() == 0) {
+            return "";
+        }
+         
+        StringBuffer sb = new StringBuffer();
+         
+        for (String str : strs) {
+            int len = str == null ? 0 : str.length();
+            sb.append(len);
+            sb.append('#');
+            sb.append(str);
+        }
+         
+        return sb.toString();
+    }
+ 
+    // Decodes a single string to a list of strings.
+    public List<String> decode(String s) {
+        List<String> result = new ArrayList<String>();
+        if (s == null || s.length() == 0) {
+            return result;
+        }
+         
+        int i = 0;
+        while (i < s.length()) {
+            int len = 0;
+            // Get length
+            while (i < s.length() && s.charAt(i) != '#') {
+                len = len * 10 + Character.getNumericValue(s.charAt(i));
+                i++;
+            }
+             
+            String str = s.substring(i + 1, i + len + 1);
+            result.add(str);
+            i = i + len + 1;
+        }
+         
+        return result;
+    }
+}
+ 
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(strs));

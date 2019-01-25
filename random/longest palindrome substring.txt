@@ -1,0 +1,39 @@
+Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring.
+
+Understand the problem:
+The problem asks for finding the longest palindromic substring in string S. The problem assumes that there is only one unique longest palindromic substring, and we are asked to return that substring. 
+
+Naive Solution:
+One straight-forward solution is to check each substring and determine if it is palindromic. So looping over each substring take O(n^2) time and checking each substring takes O(n) time. The total time complexity is O(n^3). 
+
+DP Solution:
+This question is quite similar to the Palindrome partitioning II, where return the minimum number of cuts such that all substrings are palindrome. The minimum cuts are equal to the longest palindrome. So we can still use the same idea to solve this problem.
+
+In the palindrome partitioning II problem, we used an array dp[i] to indicate the minimum number of cuts from i to the end. However, in this problem, the longest palindromic substring does not always start from the first character of the input string; it can start from anywhere else. So we don't need to maintain an array dp[i] and check the results in dp[0]. Instead, whenever we found string[i, j] is a palindrome, we check its length. If it is the maximum, we keep it. In this way, we only keep the longest palindromic substring. The way to determine if a string from [i, j] is palindromic is the same as before.  
+
+
+public class Solution {
+    public String longestPalindrome(String s) {
+        String longestStr = null;
+        int maxLen = 0;
+         
+        if (s == null || s.isEmpty()) return s;
+         
+        int len = s.length();
+        boolean[][] palin = new boolean[len][len];
+         
+        for (int i = len - 1; i >= 0; i--) {
+            for (int j = i; j < len; j++) {
+                if ((s.charAt(i) == s.charAt(j) && (j - i) < 2) || (s.charAt(i) == s.charAt(j) && palin[i + 1][j - 1])) {
+                    palin[i][j] = true;
+                    int temp = j - i + 1;
+                    if (temp > maxLen) {
+                        maxLen = temp;
+                        longestStr = s.substring(i, j + 1);
+                    }
+                }
+            }
+        }
+        return longestStr;
+    }
+}

@@ -1,0 +1,53 @@
+public class Solution {
+    public int numOverLaps(List<Integer> start, List<Integer> end) {
+        if (start == null || start.size() == 0 || end == null || end.size() == 0) {
+            return 0;
+        }
+         
+        if (start.size() != end.size()) {
+            return 0;
+        }
+         
+        Collections.sort(start);
+        Collections.sort(end);
+         
+        int startP = 0;
+        int endP = 0;
+         
+        int numActive = 0;
+        int numOverlap = 0;
+         
+        while (startP < start.size() && endP < end.size()) {
+            if (start.get(startP) < end.get(endP)) {
+                numActive++;
+                numOverlap = Math.max(numOverlap, numActive);
+                startP++;
+            } else {
+                numActive--;
+                endP++;
+            }
+        }
+        return numOverlap;
+    }
+ 
+  public static void main(String[] args) {
+    Solution sol = new Solution();
+ 
+    List<Integer> start = new ArrayList<Integer>();
+    List<Integer> end = new ArrayList<Integer>();
+ 
+    start.add(1);
+    start.add(2);
+    start.add(5);
+    start.add(4);
+ 
+    end.add(3);
+    end.add(4);
+    end.add(6);
+    end.add(7);
+ 
+    int result = sol.numOverLaps(start, end);
+ 
+    System.out.println("Result is " + result);
+  }
+}

@@ -1,0 +1,31 @@
+So we must come out another solution. For a symmetric tree, the left child and right child of the root must be equal. Then for those two nodes, the left node's left child must be equal to the right node's right child; the left node's right child must be equal to the right node's left child. Then we recursively repeats those process until both nodes are null.
+
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) return true;
+         
+        return isSymmetric(root.left, root.right);
+    }
+     
+    private boolean isSymmetric(TreeNode a, TreeNode b) {
+        if (a == null) return b == null;
+        else if (b == null) return false;
+         
+        if (a.val != b.val) return false;
+         
+        if (isSymmetric(a.left, b.right) == false) return false;
+        if (isSymmetric(a.right, b.left) == false) return false;
+         
+        return true;
+    }
+}

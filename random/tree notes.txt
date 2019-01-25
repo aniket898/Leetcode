@@ -1,0 +1,57 @@
+Pre-order[edit]
+Display the data part of the root (or current node).
+Traverse the left subtree by recursively calling the pre-order function.
+Traverse the right subtree by recursively calling the pre-order function.
+
+preorder(node)
+  if (node = null)
+    return
+  visit(node)
+  preorder(node.left)
+  preorder(node.right)
+
+In-order[edit]
+Traverse the left subtree by recursively calling the in-order function.
+Display the data part of the root (or current node).
+Traverse the right subtree by recursively calling the in-order function.
+In a search tree, in-order traversal retrieves data in sorted order.[4]
+
+Post-order[edit]
+Traverse the left subtree by recursively calling the post-order function.
+Traverse the right subtree by recursively calling the post-order function.
+Display the data part of the root (or current node).
+
+
+BFS
+levelorder(root)
+  q = empty queue
+  q.enqueue(root)
+  while (not q.isEmpty())
+    node = q.dequeue()
+    visit(node)
+    if (node.left != null)
+      q.enqueue(node.left)
+    if (node.right != null)
+      q.enqueue(node.right)
+
+
+
+
+DFS
+1.Stack stack; // i have named my stack as "stack"
+2.isVisited(root) = true;
+3.stack.push(root);
+4.while(stack is not empty)
+5.{
+6.      currentNode = stack.top();
+7.        stack.pop();
+8.        print(currNode); //or whatever operation you want to do!
+9.       for all each v in adj[currNode]
+10       if(!isVisited[v])
+11        {
+12           stack.push(v);
+13          isVisited[v] = true;
+14        }
+15 }
+
+O(V+E)

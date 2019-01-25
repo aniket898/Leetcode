@@ -1,0 +1,135 @@
+Understand the problem:
+This question is an reverse question of the previous one. Let's still an transforming 26-base number to a 10-base number. Before we solve this question, let's consider how to convert a string to a number. For e.g. "123" -> 123, we start from the most significant digit,
+1 + result * 10 = 1
+2 + rssult * 10 = 12
+3 + result * 10 = 123
+
+So the solution here is the same, except for replacing the 10 by 26. Also noted that we need to add number by 1 each time since this question is index-1 started. 
+
+
+public class Solution {
+    public int titleToNumber(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+         
+        int result  = 0;
+         
+        for (int i = 0; i < s.length(); i++) {
+            result = result * 26 + s.charAt(i) - 'A' + 1;
+        }
+         
+        return result;
+    }
+}
+
+Understand the problem:
+A classic 10-based math to 26-based math. Remember for a 10-based integer, e.g. 123, how can we extract each digit?  The idea is from the least significant digit and use %10 and /10 respectively. e.g. 
+123 % 10 = 3, 123 / 10 = 12
+12 % 10 = 2, 12 / 10 = 1
+1 % 10 = 1, 1 / 10 - 0.
+
+Therefore, for this question, we only need to replace 10 to 26. Note that for this question, the map is from 1 to 26. Therefore, we need to minus 1 for each number before the computation.  
+
+
+public class Solution {
+    public String convertToTitle(int n) {
+        if (n <= 0) {
+            return "";
+        }
+         
+        StringBuffer sb = new StringBuffer();
+         
+        while (n > 0) {
+            n--;
+             
+            int val = n % 26;
+            char title = (char) (val + 'A');
+            sb.insert(0, title);
+             
+            n /= 26;
+        }
+         
+        return sb.toString();
+    }
+}
+  
+
+
+Excel Sheet Column Number
+Given a column title as appear in an Excel sheet, return its corresponding column number. For example:
+
+    A -> 1
+    B -> 2
+    C -> 3
+    ...
+    Z -> 26
+    AA -> 27
+    AB -> 28 
+    ...
+    AAA -> 703 
+
+
+This problem is related to Excel Sheet Column Title. The key is to use a hashmap to store the mapping between character and integer. Starting from the right-hand side, the converted value for each character is the mapping integer * 26 to the t-th power, where t starts from 0.
+
+public int titleToNumber(String s) {
+    if(s==null || s.length() == 0){
+        throw new IllegalArgumentException("Input is not valid!");
+    }
+ 
+    HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+    char c = 'A';
+    for(int i=1; i<=26; i++){
+        map.put(c, i);
+        c += 1; 
+    }
+ 
+    int result = 0;
+    int i = s.length()-1;
+    int t = 0;
+    while(i >= 0){
+        char curr = s.charAt(i);
+        result = result + (int) Math.pow(26, t) * map.get(curr);
+        t++;
+        i--;
+    }
+ 
+    return result;
+}
+
+
+
+Problem
+
+Given a positive integer, return its corresponding column title as appear in an Excel sheet. For example:
+
+    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+
+
+This problem is the reverse version of Excel Sheet Column Number.
+
+The key is n--. The minimum in 26-bit number is mapped to 1, not 0.
+
+public String convertToTitle(int n) {
+    if(n <= 0){
+        throw new IllegalArgumentException("Input is not valid!");
+    }
+ 
+    StringBuilder sb = new StringBuilder();
+ 
+    while(n > 0){
+        n--;
+        char ch = (char) (n % 26 + 'A');
+        n /= 26;
+        sb.append(ch);
+    }
+ 
+    sb.reverse();
+    return sb.toString();
+}

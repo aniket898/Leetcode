@@ -1,0 +1,71 @@
+Given a binary tree, find its maximum depth.
+The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+
+Understand of the problem:
+The problem asks for finding the maximum depth of a binary tree. The maximum depth is defined as the number of nodes along the longest path from the root down to the farthest leaf node. 
+
+Recursive Solution:
+The idea is still using pre-order traversal. We keep tracking of the depth of each node, and if the node is a leaf, we compare its depth with the maximum depth, and update the maximum depth, if needed. 
+
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    private int max = Integer.MIN_VALUE;
+    public int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+         
+        maxDepth(root, 0);
+         
+        return max;
+    }
+     
+    private void maxDepth(TreeNode root, int depth) {
+        if (root == null) return;
+         
+        depth++;
+         
+        // check if it is leaf
+        if (root.left == null && root.right == null && depth > max) {
+            max = depth;
+        }
+         
+        maxDepth(root.left, depth);
+        maxDepth(root.right, depth);
+    }
+}
+
+
+
+
+Divide and conquer
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int maxDepth(TreeNode root) {
+         
+        if (root == null) {
+            return 0;
+        }
+         
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+         
+        return Math.max(left, right) + 1;
+    }
+}

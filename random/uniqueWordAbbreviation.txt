@@ -1,0 +1,84 @@
+An abbreviation of a word follows the form <first letter><number><last letter>. Below are some examples of word abbreviations:
+a) it                      --> it    (no abbreviation)
+
+     1
+b) d|o|g                   --> d1g
+
+              1    1  1
+     1---5----0----5--8
+c) i|nternationalizatio|n  --> i18n
+
+              1
+     1---5----0
+d) l|ocalizatio|n          --> l10n
+Assume you have a dictionary and given a word, find whether its abbreviation is unique in the dictionary. A word's abbreviation is unique if no other word from the dictionary has the same abbreviation.
+Example: 
+Given dictionary = [ "deer", "door", "cake", "card" ]
+
+isUnique("dear") -> false
+isUnique("cart") -> true
+isUnique("cane") -> false
+isUnique("make") -> true
+
+So how to determine if a word is unique in the abbrivation? There are still two cases to consider: 
+1. If the abbr of the input word does not appear in the abbr dict, return true;
+2. If the abbr of the input word DOES appears in the abbr dict, we must make sure the input word is in the dictionary AND the its abbreviation format can only appear once in the abbr dict. 
+  -- Now here comes to the corner case that the dict contains duplicates. In this case, both the dict and abbr dict will store "a", 2. So in this way, a does not appear only once! So the solution to handle this edge case is we must make sure the word freq in the dict and abbr dict is exactly the same. So we can make sure the word has no other duplicated abbrivations in the abbr dict. 
+
+
+public class ValidWordAbbr {
+    private Set<String> uniqueDict;
+    private Map<String, String> abbrDict;
+ 
+    public ValidWordAbbr(String[] dictionary) {
+        uniqueDict = new HashSet<>();
+        abbrDict = new HashMap<>();
+         
+        for (String word : dictionary) {
+            if (!uniqueDict.contains(word)) {
+                String abbr = getAbbr(word);
+                if (!abbrDict.containsKey(abbr)) {
+                    abbrDict.put(abbr, word);
+                } else {
+                    abbrDict.put(abbr, "");
+                }
+                 
+                uniqueDict.add(word);
+            }
+        }
+    }
+ 
+    public boolean isUnique(String word) {
+        if (word == null || word.length() == 0) {
+            return true;
+        }
+         
+        String abbr = getAbbr(word);
+        if (!abbrDict.containsKey(abbr) || abbrDict.get(abbr).equals(word)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+     
+    private String getAbbr(String word) {
+        if (word == null || word.length() < 3) {
+            return word;
+        }
+         
+        StringBuffer sb = new StringBuffer();
+        sb.append(word.charAt(0));
+        sb.append(word.length() - 2);
+        sb.append(word.charAt(word.length() - 1));
+         
+        return sb.toString();
+ 
+    }
+     
+}
+ 
+ 
+// Your ValidWordAbbr object will be instantiated and called as such:
+// ValidWordAbbr vwa = new ValidWordAbbr(dictionary);
+// vwa.isUnique("Word");
+// vwa.isUnique("anotherWord");

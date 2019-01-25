@@ -1,0 +1,55 @@
+Given a binary tree, determine if it is a valid binary search tree (BST).
+Assume a BST is defined as follows:
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
+
+
+Understand the problem:
+The problem asks for validating if a binary tree is a binary search tree. So we must first understand what is a BST? Basically, a BST is a binary tree where nodes are ordered in the following way:
+
+each node contains one key, also known as data
+the keys in the left subtree are less than the key in its parent node
+the keys in the right subtree are greater than the key in the parent node
+duplicated keys are not allowed.
+Consequently, it is not hard to find that BST is defined in a recursive way. So we may use DFS to traverse the tree.
+
+Solution:
+Since the BST is defined as left children is less than the parent, while right children is greater than the parent. So we can in inorder traversal to traverse the tree. We use inorder traverse because it goes to left child first, then parent, then right child. They should be ordered in a ascending order, if it is a BST.
+
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    private int min = Integer.MIN_VALUE;
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return true;
+ 
+        return inOrderTraverse(root);
+    }
+     
+    public boolean inOrderTraverse(TreeNode node) {
+        if (node == null) return true;
+         
+        if (inOrderTraverse(node.left) == false) return false;
+         
+        if (node.val > min) {
+            min = node.val;
+        } else return false;
+         
+         
+        if (inOrderTraverse(node.right) == false) return false;
+         
+        return true;
+    }
+}
+
+
