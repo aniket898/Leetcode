@@ -32,7 +32,7 @@ public class Solution {
         if(nestedList == null || nestedList.size() == 0){
             return 0;
         }
-        int [] res = {0}; //no need for array
+        int[] res = {0};
         for(NestedInteger item : nestedList){
             dfs(item, 1, res);
         }
